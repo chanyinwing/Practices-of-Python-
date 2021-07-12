@@ -6,6 +6,10 @@ win.bgcolor("black")
 win.setup(width=800, height=500)
 win.tracer(0)
 
+#score
+player1_score = 0
+player2_score = 0
+
 #Paddle 1
 paddle_1 = turtle.Turtle()
 paddle_1.speed(0)
@@ -34,23 +38,32 @@ ball.goto(0, 0)
 ball.dx = 2
 ball.dy = 2
 
+#pen
+score = turtle.Turtle()
+score.speed(0)
+score.shape("square")
+score.color("white")
+score.penup()
+score.hideturtle()
+score.goto(0,200)
+score.write(f"Player 1: {player1_score}  Player 2: {player2_score}", align="center", font=("Courier", 24, "normal"))
+
 #Functions
 def paddle_1_up() :
     y = paddle_1.ycor()
     y += 20
     paddle_1.sety(y)
 
-def paddle_2_up():
-    y = paddle_2.ycor()
-    y += 20
-    paddle_2.sety(y)
-
-
 def paddle_1_down():
     y = paddle_1.ycor()
     y -= 20
     paddle_1.sety(y)
 
+
+def paddle_2_up():
+    y = paddle_2.ycor()
+    y += 20
+    paddle_2.sety(y)
 def paddle_2_down():
     y = paddle_2.ycor()
     y -= 20
@@ -75,7 +88,6 @@ while True:
     if ball.ycor() > 240:
         ball.sety(240)
         ball.dy *= -1
-
     elif ball.ycor() < -240:
         ball.sety(-240)
         ball.dy *= -1
@@ -83,16 +95,22 @@ while True:
 
     #left right
     if ball.xcor() > 350:
+        player1_score += 1
+        score.clear()
+        score.write(f"Player 1: {player1_score}  Player 2: {player2_score}", align="center", font=("Courier", 24, "normal"))
         ball.goto(0,0)
         ball.dx *= -1
 
     elif ball.xcor() < -350:
+        player2_score += 1
+        score.clear()
+        score.write(f"Player 1: {player1_score}  Player 2: {player2_score}", align="center", font=("Courier", 24, "normal"))
         ball.goto(0,0)
         ball.dx *= -1
 
     #Bounce
-    if ball.xcor() < -340 and ball.ycor() < paddle_1.ycor() + 100 and ball.ycor() > paddle_1.ycor() - 50:
+    if ball.xcor() < -340 and (paddle_1.ycor() -50 < ball.ycor() < paddle_1.ycor() +50):
         ball.dx *= -1
 
-    elif ball.xcor() > 340 and ball.ycor() < paddle_2.ycor() + 100 and ball.ycor() > paddle_2.ycor() - 50:
+    elif ball.xcor() >340 and (paddle_2.ycor() -50 < ball.ycor() < paddle_2.ycor() +50):
         ball.dx *= -1
